@@ -74,7 +74,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     });
     const { password: _, ...safeUser } = updatedUser;
     const access_token = jwt.sign(
-      { userId: user.id, email: user.email, role: user?.role! },
+      { id: user.id, email: user.email, role: user?.role! },
       process.env.JWT_SECRET_KEY!,
       { expiresIn: "7d" },
     );
