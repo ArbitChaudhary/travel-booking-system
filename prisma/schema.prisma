@@ -16,13 +16,17 @@ model User {
   id                      Int       @id @default(autoincrement())
   email                   String    @unique
   name                    String
-  password                String
+  password                String?
   profilePicture          String?
   otp                     String?
   otpExpiry               DateTime?
   forgotPasswordOtp       String?
   forgotPasswordOtpExpiry DateTime?
+  refreshToken            String?
+  role                    String    @default("USER")
+  googleId                String?   @unique
+  facebookId              String?   @unique
+  isVerified              Boolean   @default(false)
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
-  refreshToken            String?
 }
