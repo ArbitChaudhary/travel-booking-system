@@ -41,6 +41,12 @@ export enum RoomType {
   SUITE = "suite",
   DELUXE = "deluxe",
 }
+export enum BedType {
+  SINGLE = "single",
+  DOUBLE = "double",
+  QUEEN = "queen",
+  KING = "king",
+}
 export enum TransportClass {
   SLEEPER = "sleeper",
   AC = "ac",

@@ -52,12 +52,55 @@ model Hotel {
 model Room {
   id             Int      @id @default(autoincrement())
   hotelId        Int
+  name           String
+  description    String?
+  type           String
+  bedType        String
   pricePerNight  Float
   availableRooms Int
   totalRooms     Int
+  size           Int?
+  view           String?
+  images         String[]
   amenities      String[]
+  isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   hotel Hotel @relation(fields: [hotelId], references: [id])
+  // hotelBookings HotelBooking[]
+}
+
+model CarRental {
+  id          Int      @id @default(autoincrement())
+  company     String
+  model       String
+  type        String
+  city        String
+  pricePerDay Float
+  available   Boolean  @default(true)
+  features    String[]
+  images      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // carRentalBookings CarRentalBooking[]
+}
+
+model TourPackage {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String
+  destination    String
+  price          Float
+  durationDays   Int // in days
+  maxGroupSize   Int
+  availableSlots Int
+  images         String[]
+  inclusions     String[]
+  exclusions     String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // tourBookings TourBooking[]
 }

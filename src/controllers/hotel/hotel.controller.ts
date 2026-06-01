@@ -47,6 +47,9 @@ export const getHotels = async (req: Request, res: Response) => {
             { country: { contains: search, mode: "insensitive" } },
           ],
         },
+        include: {
+          rooms: true,
+        },
       }),
       prisma.hotel.count(),
     ]);
@@ -68,6 +71,9 @@ export const getHotelById = async (req: Request, res: Response) => {
 
     const hotel = await prisma.hotel.findUnique({
       where: { id: parseInt(id as string) },
+      include: {
+        rooms: true,
+      },
     });
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
