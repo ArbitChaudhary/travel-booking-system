@@ -4,9 +4,9 @@ import {
   createTourPackage,
   deleteTourPackage,
   getTourPackageById,
-  listTourPackages,
   updateTourPackage,
 } from "../../services/tour-package.service";
+import { prisma } from "../../../lib/prisma";
 
 // Parse a query value into a number, returning undefined for missing/invalid.
 const toNumber = (value: unknown): number | undefined => {
@@ -23,19 +23,23 @@ const toBoolean = (value: unknown): boolean | undefined => {
 
 export const getAllTourPackages = async (req: Request, res: Response) => {
   try {
-    const result = await listTourPackages({
-      search: (req.query.search as string) || undefined,
-      destination: (req.query.destination as string) || undefined,
-      minPrice: toNumber(req.query.minPrice),
-      maxPrice: toNumber(req.query.maxPrice),
-      minDuration: toNumber(req.query.minDuration),
-      maxDuration: toNumber(req.query.maxDuration),
-      available: toBoolean(req.query.available),
-      page: toNumber(req.query.page),
-      limit: toNumber(req.query.limit),
-    });
+    const search = (req.query.search as string) || "";
+    const limit = parseInt(req.query.limit as string) || 30;
+    const page = parseInt(req.query.page as string) || 1;
+    const offset = (page - 1) * limit;
 
-    return res.status(200).json(result);
+    const tours = await prisma.tourPackage.findMany({
+      take: limit,
+      skip: offset,
+      where: {
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
+          { destination: { contains: search, mode: "insensitive" } },
+        ],
+      },
+    });
+    return res.status(200).json(tours);
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error", error });
   }

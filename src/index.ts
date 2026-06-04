@@ -12,9 +12,11 @@ app.use(
 );
 
 import authRoutes from "./routes/auth.route";
+import carRentalRoutes from "./routes/car-rental.route";
 import tourPackageRoutes from "./routes/tour-package.route";
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/car-rentals", carRentalRoutes);
 app.use("/api/v1/tours", tourPackageRoutes);
 
 const PORT = process.env.PORT || 3000;
